@@ -14,7 +14,7 @@ namespace PointOfSale
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             string fileName = Path.Combine(directory.FullName, "MenuItems.csv");
-            List<Product> MenuItems = ReadMenu(fileName);
+            Dictionary<int, Product> MenuItems = ReadMenu(fileName);
             Console.WriteLine("Welcome to Pink Moon Cafe!");
             MainMenu(MenuItems);
         }
@@ -33,9 +33,11 @@ namespace PointOfSale
             }
         }
 
-        public static List<Product> ReadMenu(string fileName)
+        public static Dictionary<int, Product> ReadMenu(string fileName)
         {
-            var MenuItems = new List<Product>();
+            Dictionary<int, Product> products = new Dictionary<int, Product>();
+            int count = 1;
+            //var MenuItems = new List<Product>();
             using (var reader = new StreamReader(fileName))
             {
                 string line = "";
@@ -51,25 +53,21 @@ namespace PointOfSale
                     {
                         product.Category = category;
                     }
-                    SubCategory subCategory;
-                    if (Enum.TryParse(values[2], out subCategory))
-                    {
-                        product.SubCategory = subCategory;
-                    }
-                    product.Description = values[3];
+                    product.Description = values[2];
                     double price;
-                    if (double.TryParse(values[4], out price))
+                    if (double.TryParse(values[3], out price))
                     {
                         product.Price = price;
                     }
 
-                    MenuItems.Add(product);
+                    products.Add(count, product);
+                    count++;
                 }
             }
-            return MenuItems;
+            return products;
         }
 
-        public static void MainMenu(List<Product> MenuList)
+        public static void MainMenu(Dictionary<int, Product> MenuList)
         {
             while (true)
             {
@@ -78,27 +76,27 @@ namespace PointOfSale
                 switch (switchAnswer)
                 {
                     case "1":
-                        SubCategory tea = SubCategory.Tea;
+                        Category tea = Category.Tea;
                         DisplayProductList(MenuList, tea);
                         break;
                     case "2":
-                        SubCategory latte = SubCategory.Latte;
+                        Category latte = Category.Latte;
                         DisplayProductList(MenuList, latte);
                         break;
                     case "3":
-                        SubCategory coffee = SubCategory.Coffee;
+                        Category coffee = Category.Coffee;
                         DisplayProductList(MenuList, coffee);
                         break;
                     case "4":
-                        SubCategory icedTea = SubCategory.IcedTea;
-                        DisplayProductList(MenuList, icedTea);
+                        Category chilled = Category.Chilled;
+                        DisplayProductList(MenuList, chilled);
                         break;
                     case "5":
-                        SubCategory sweet = SubCategory.Sweet;
+                        Category sweet = Category.Sweet;
                         DisplayProductList(MenuList, sweet);
                         break;
                     case "6":
-                        SubCategory savory = SubCategory.Savory;
+                        Category savory = Category.Savory;
                         DisplayProductList(MenuList, savory);
                         break;
                     default:
@@ -115,17 +113,20 @@ namespace PointOfSale
             }
         }
 
-        public static void DisplayProductList(List<Product> MenuItems, SubCategory choice)
+        public static void DisplayProductList(Dictionary<int, Product> MenuItems, Category choice)
         {
-            Console.WriteLine($"\nAvailable {choice}s:\n");
-            Console.WriteLine("{0, -20:0} {1, -50:0} {2, -40:0}", "Name", "Description", "Price");
-            Console.WriteLine("{0, -20:0} {0, -50:0} {0, -40:0}", "========");
-            foreach (Product item in MenuItems)
+            Console.WriteLine(" ");
+            Console.WriteLine($"Available {choice}s:");
+            Console.WriteLine("{0, -10:0} {1, -20:0} {2, -50:0} {3, -20:0}", "Item", "Name", "Description", "Price");
+            Console.WriteLine("{0, -10:0} {1, -20:0} {2, -50:0} {3, -20:0}", "====", "====", "===========", "=====");
+
+            foreach (KeyValuePair<int, Product> item in MenuItems)
             {
-                if (item.SubCategory == choice)
+                if (item.Value.Category == choice)
                 {
-                    Console.WriteLine("{0, -20:0} {1, -50:0} {2, -40:C}", item.Name, item.Description,  item.Price);
+                    Console.WriteLine("{0, -10:0} {1, -20:0} {2, -50:0} {3, -20:C}", item.Key, item.Value.Name, item.Value.Description, item.Value.Price);
                 }
+                
             }
             Console.WriteLine(" ");
         }

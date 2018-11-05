@@ -1,29 +1,29 @@
-Name,Category,SubCategory,Description,Price
-Chamomile ,Beverage,Tea,Delicate sweet and fruity.,2.5
-Green,Beverage,Tea,Earthy and delicate.,2.5
-Cinnamon stick,Beverage,Tea,Blend of black tea and cinnamon.,2.5
-White,Beverage,Tea,Floral  light and sweet.,2.5
-English Breakfast,Beverage,Tea,Robust rich black tea with milk and sugar.,2.5
-Chai,Beverage,Latte,Fragrant black tea blended with spices.,4
-Londen Fog,Beverage,Latte,Earl grey latte with a hint of licorice.,4
-Golden,Beverage,Latte,Turmeric latte.,5
-Matcha,Beverage,Latte,Earthy creamy full bodied green tea.,4
-Blue Moon,Beverage,Latte,Blue matcha latte using Ashwagandha.,5
-Pink Moon,Beverage,Latte,Rose cardamom tea.,5
-Macchiato,Beverage,Coffee,Espresso with a dash of steamed milk.,2.5
-Americano,Beverage,Coffee,Espresso diluted with hot water.,3
-Cappucino,Beverage,Coffee,Coffee made with milk that has been frothed.,3
-Latte,Beverage,Coffee,Espresso and hot steamed milk.,3.5
-Mocha,Beverage,Coffee,Latte with chocolate.,4
-Affogato,Beverage,Coffee,Ice cream drowned in espresso.,5
-Cold Brew,Beverage,Coffee,Coffee brewed using cold water.,4
-Thai Tea,Beverage,IcedTea,Spiced black tea with condensed milk.,3.5
-Lavender Lemonade,Beverage,IcedTea,Lemonade with a hint of lavender.,3.5
-Southern Sweet Tea,Beverage,IcedTea,Sweetened iced black tea.,3.5
-Scone,Food,Sweet,Glazed cranberry orange scone.,4
-Brownie,Food,Sweet,Rich fudgy chocolate brownie.,3
-Chai snickerdoodle,Food,Sweet,Flavored with chai spice blend.,3
-Lemon poppyseed cake,Food,Sweet,Refreshing lemon poppyseed cake.,2.5
-Cupcake,Food,Sweet,Lavender with cream cheese frosting.,3
-Tea Sandwich,Food,Savory,Variety of tea sandwhiches.,3
-Quiche,Food,Savory,Bacon and spinach quiche.,4
+Name,Category,Description,Price
+Chamomile ,Tea,Delicate sweet and fruity.,2.5
+Green,Tea,Earthy and delicate.,2.5
+Cinnamon stick,Tea,Blend of black tea and cinnamon.,2.5
+White,Tea,Floral  light and sweet.,2.5
+English Breakfast,Tea,Robust rich black tea with milk and sugar.,2.5
+Chai,Latte,Fragrant black tea blended with spices.,4
+Londen Fog,Latte,Earl grey latte with a hint of licorice.,4
+Golden,Latte,Turmeric latte.,5
+Matcha,Latte,Earthy creamy full bodied green tea.,4
+Blue Moon,Latte,Blue matcha latte using Ashwagandha.,5
+Pink Moon,Latte,Rose cardamom tea.,5
+Macchiato,Coffee,Espresso with a dash of steamed milk.,2.5
+Americano,Coffee,Espresso diluted with hot water.,3
+Cappucino,Coffee,Coffee made with milk that has been frothed.,3
+Latte,Coffee,Espresso and hot steamed milk.,3.5
+Mocha,Coffee,Latte with chocolate.,4
+Affogato,Coffee,Ice cream drowned in espresso.,5
+Cold Brew,Coffee,Coffee brewed using cold water.,4
+Thai Tea,Chilled,Spiced black tea with condensed milk.,3.5
+Lavender Lemonade,Chilled,Lemonade with a hint of lavender.,3.5
+Southern Sweet Tea,Chilled,Sweetened iced black tea.,3.5
+Scone,Sweet,Glazed cranberry orange scone.,4
+Brownie,Sweet,Rich fudgy chocolate brownie.,3
+Chai snickerdoodle,Sweet,Flavored with chai spice blend.,3
+Lemon poppyseed cake,Sweet,Refreshing lemon poppyseed cake.,2.5
+Cupcake,Sweet,Lavender with cream cheese frosting.,3
+Tea Sandwich,Savory,Variety of tea sandwhiches.,3
+Quiche,Savory,Bacon and spinach quiche.,4
