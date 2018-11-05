@@ -1,0 +1,8 @@
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\bin\Debug\PointOfSale.exe.config
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\bin\Debug\PointOfSale.exe
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\bin\Debug\PointOfSale.pdb
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\obj\Debug\PointOfSale.csprojAssemblyReference.cache
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\obj\Debug\PointOfSale.csproj.CoreCompileInputs.cache
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\obj\Debug\PointOfSale.exe
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\obj\Debug\PointOfSale.pdb
+\\mi\dfs\Users\LChang\Desktop\Assessments\Midterm\PointOfSale\PointOfSale\bin\Debug\MenuItems.csv

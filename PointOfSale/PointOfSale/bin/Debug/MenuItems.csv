@@ -1,0 +1,29 @@
+Name,Category,SubCategory,Description,Price
+Chamomile ,Beverage,Tea,Delicate sweet and fruity. Helps to destress and relax.,2.50
+Green,Beverage,Tea,Earthy and delicate.,2.50
+Cinnamon stick,Beverage,Tea,Blend of black tea and cinnamon.,2.50
+White,Beverage,Tea,Floral  light and sweet.,2.50
+English Breakfast,Beverage,Tea,Robust rich black tea that pairs well with milk and sugar.,2.50
+Chai,Beverage,Latte,Fragrant black tea blended with cardamom cinnamon ginger and other spices,4.00
+Londen Fog,Beverage,Latte,Earl grey latte with a hint of licorice,4.00
+Golden,Beverage,Latte,Turmeric latte with anti-inflammatory properties,5.00
+Matcha,Beverage,Latte,Earthy creamy full bodied green tea,4.00
+Blue Moon,Beverage,Latte,Blue matcha latte using Ashwagandha  helps clam nerves and induce sleep,5.00
+Pink Moon,Beverage,Latte,Rose cardamom tea,5.00
+Macchiato,Beverage,Coffee,Espresso with a dash of frothy steamed milk.,2.50
+Americano,Beverage,Coffee,Espresso diluted with hot water.,3.00
+Cappucino,Beverage,Coffee,Coffee made with milk that has been frothed up with pressurized steam.,3.00
+Latte,Beverage,Coffee,Espresso and hot steamed milk  milkier than a cappuccino.,3.50
+Mocha,Beverage,Coffee,Latte with chocolate.,4.00
+Affogato,Beverage,Coffee,Ice cream drowned in espresso.,5.00
+Cold Brew,Beverage,Coffee,Coffee that is brewed using cold water  less bitter than traditional coffee.,4.00
+Thai Tea,Beverage,IcedTea,Spiced black tea sweetened with condensed milk.,3.50
+Lavender Lemonade,Beverage,IcedTea,Purple lemonade with a hint of lavender.,3.50
+Southern Sweet Tea,Beverage,IcedTea,Sweetened iced black tea.,3.50
+Scone,Food,Sweet,Glazed cranberry orange scone.,4.00
+Brownie,Food,Sweet,Rich fudgy chocolate brownie.,3.00
+Chai snickerdoodle,Food,Sweet,Snickerdoodle cookie flavored with chai spice blend.,3.00
+Lemon poppyseed cake,Food,Sweet,Refreshing lemon poppyseed cake.,2.50
+Cupcake,Food,Sweet,Lavender cupcakes with cream cheese frosting.,3.00
+Tea Sandwich,Food,Savory,Variety of traditional tea sandwhiches.,3.00
+Quiche,Food,Savory,Bacon and spinach quiche.,4.00
