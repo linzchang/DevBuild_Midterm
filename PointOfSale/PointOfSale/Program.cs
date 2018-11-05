@@ -16,13 +16,24 @@ namespace PointOfSale
             string fileName = Path.Combine(directory.FullName, "MenuItems.csv");
             Dictionary<int, Product> MenuItems = ReadMenu(fileName);
             Console.WriteLine("Welcome to Pink Moon Cafe!");
-            MainMenu(MenuItems);
+            DisplayMainMenu(MenuItems);
         }
 
         public static string GetInput(string message)
         {
             Console.WriteLine(message);
             return Console.ReadLine();
+        }
+
+        public static int GetProductKey(string message)
+        {
+            int number;
+            Console.WriteLine(message);
+            while (!int.TryParse(Console.ReadLine(), out number) || number < 1 || number > 18)
+            {
+                Console.WriteLine($"Sorry that's invalid, please try again! {message}");
+            }
+            return number;
         }
 
         public static string ReadFile(string fileName)
@@ -67,40 +78,27 @@ namespace PointOfSale
             return products;
         }
 
-        public static void MainMenu(Dictionary<int, Product> MenuList)
+        public static void DisplayMainMenu(Dictionary<int, Product> MenuList)
         {
+            string switchAnswer = GetInput("Please choose from the following for a list of products:\n1. Tea\n2. Latte \n3. Coffee");
             while (true)
             {
-                string switchAnswer = GetInput("Please choose from the following for a list of products:\n1. Tea\n2. Latte \n3. Coffee\n4. Iced Tea\n5. Sweet food\n6. Savory food");
-
                 switch (switchAnswer)
                 {
                     case "1":
                         Category tea = Category.Tea;
-                        DisplayProductList(MenuList, tea);
+                        DisplayProductListByCategory(MenuList, tea);
                         break;
                     case "2":
                         Category latte = Category.Latte;
-                        DisplayProductList(MenuList, latte);
+                        DisplayProductListByCategory(MenuList, latte);
                         break;
                     case "3":
                         Category coffee = Category.Coffee;
-                        DisplayProductList(MenuList, coffee);
-                        break;
-                    case "4":
-                        Category chilled = Category.Chilled;
-                        DisplayProductList(MenuList, chilled);
-                        break;
-                    case "5":
-                        Category sweet = Category.Sweet;
-                        DisplayProductList(MenuList, sweet);
-                        break;
-                    case "6":
-                        Category savory = Category.Savory;
-                        DisplayProductList(MenuList, savory);
+                        DisplayProductListByCategory(MenuList, coffee);
                         break;
                     default:
-                        Console.WriteLine("That is not a valid selection, try again.");
+                        switchAnswer = GetInput("That is not a valid selection, try again.");
                         continue;
                 }
 
@@ -113,7 +111,7 @@ namespace PointOfSale
             }
         }
 
-        public static void DisplayProductList(Dictionary<int, Product> MenuItems, Category choice)
+        public static void DisplayProductListByCategory(Dictionary<int, Product> MenuItems, Category choice)
         {
             Console.WriteLine(" ");
             Console.WriteLine($"Available {choice}s:");
@@ -126,9 +124,44 @@ namespace PointOfSale
                 {
                     Console.WriteLine("{0, -10:0} {1, -20:0} {2, -50:0} {3, -20:C}", item.Key, item.Value.Name, item.Value.Description, item.Value.Price);
                 }
-                
             }
             Console.WriteLine(" ");
+            SelectPurchaseOrMenu(MenuItems);
+        }
+
+        public static void SelectPurchaseOrMenu(Dictionary<int, Product> MenuItems)
+        {
+            Console.WriteLine("Would you like to purchase an item or return to the Main Menu to view a list of item categories?");
+            string answer = GetInput("Type P for Purchase or M for Menu");
+            while (true)
+            {
+                switch (answer.ToUpper())
+                {
+                    case "P":
+                        MakePurchase(MenuItems);
+                        break;
+                    case "M":
+                        Console.Clear();
+                        DisplayMainMenu(MenuItems);
+                        break;
+                    default:
+                        answer = GetInput("That is not a valid selection, please try again.");
+                        continue;
+                }
+            }
+        }
+
+        public static void MakePurchase(Dictionary<int, Product> MenuItems)
+        {
+            int key = GetProductKey("Which item would you like to purchase?\nPlease enter the item number shown on the left.");
+            foreach (KeyValuePair<int, Product> item in MenuItems)
+            {
+                if (item.Key == key)
+                {
+                    Product product = item.Value;
+                    Console.WriteLine($"You selected {product.Name}.");
+                }
+            }
         }
     }
 }

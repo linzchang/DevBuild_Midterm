@@ -20,7 +20,6 @@ namespace PointOfSale
         Tea,
         Coffee,
         Sweet,
-        Savory,
-        Chilled
+        Savory
     }
 }
