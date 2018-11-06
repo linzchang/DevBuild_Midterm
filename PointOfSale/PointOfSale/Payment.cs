@@ -25,11 +25,18 @@ namespace PointOfSale
                 userPayment = Input.GetDecimal($"Sorry, you still owe {amountOwed:C}.  Please enter the amount of cash for payment:");
                 amountOwed -= userPayment;
             }
+
+            Console.WriteLine("Thank you for your payment!");
         }
 
         public static void Credit()
         {
+            ulong cardNumber = GetCardNumber("Please enter the credit card number:");
+            //get expiration
+            //get CVV
 
+            Console.WriteLine("Thank you for your payment!");
+            Console.ReadLine();
         }
 
         public static void Check()
@@ -38,7 +45,7 @@ namespace PointOfSale
             ulong accountNumber = GetAccountNumber();
             string account = accountNumber.ToString();
             Console.WriteLine($"You entered {routingNumber} for the routing number and the account number ends with {account.Substring(account.Length - 4)}.");
-            Console.ReadLine();
+            Console.WriteLine("Thank you for your payment!");
         }
 
         public static string GetRoutingNumber()
@@ -73,5 +80,27 @@ namespace PointOfSale
             }
         }
 
+        public static ulong GetCardNumber(string message)
+        {
+            ulong number;
+
+            while (true)
+            {
+                Console.WriteLine(message);
+                Console.ForegroundColor = ConsoleColor.Black;
+                string input = Console.ReadLine();
+                //if (!ulong.TryParse(input, out number) && Regex.IsMatch(input, @"\d{16}"))
+                if (Regex.IsMatch(input, @"\d{16}"))
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    number = ulong.Parse(input);
+                    return number;
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"Sorry, that's invalid. You must enter a 16 digit number.");
+                continue;
+            }
+            
+        }
     }
 }

@@ -200,7 +200,7 @@ namespace PointOfSale
                         Payment.Cash(grandTotal);
                         break;
                     case "2":
-                        Console.WriteLine("You selected Credit");
+                        Payment.Credit();
                         break;
                     case "3":
                         Payment.Check();
