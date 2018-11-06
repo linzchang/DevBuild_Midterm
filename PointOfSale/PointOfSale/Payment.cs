@@ -32,9 +32,27 @@ namespace PointOfSale
         public static void Credit()
         {
             string cardNumber = GetCardNumber("Please enter the credit card number:");
-            //get expiration
-            //get CVV
+            string expirationDate = Input.GetInput("Please enter the expiration date in MM/YYYY format:");
+            string errorMessage = $"Sorry, that's not valid.  Please enter the date in MM/YYYY format." +
+                    "Cards issued before 2000 will be rejected.";
+            if (!expirationDate.Contains("/"))
+            {
+                expirationDate = Input.GetInput(errorMessage);
+            }
+            while (true)
+            {
+                string[] dateParts = expirationDate.Split('/');
 
+                if (!Regex.IsMatch(dateParts[0], @"^(0[1-9]{1}|1[0-2]{1})$") || !Regex.IsMatch(dateParts[1], @"^20[0-9]{2}$"))
+                {
+                    expirationDate = Input.GetInput(errorMessage);
+                    continue;
+                }
+                break;
+            }
+            string cvv = GetNumberUsingRegex("Please enter the CVV:", @"^\d{3,4}$", "Sorry, that's not valid.  Please enter a 3-4 digit CVV number.");
+            Console.WriteLine($"Your payment has been processed.\nCredit card ending in {cardNumber.Substring(cardNumber.Length-4)} with " +
+                $"expiration {expirationDate} and CVV {cvv}.");
             Console.WriteLine("Thank you for your payment!");
             Console.ReadLine();
         }

@@ -209,6 +209,8 @@ namespace PointOfSale
                         payment = Input.GetInput("Sorry, that's not valid.  Please try again.\nPlease choose 1 for Cash, 2 for Credit or 3 for Check.");
                         continue;
                 }
+                //Display receipt with all items ordered, subtotal, grand total and payment info
+                //ask user if they want to quit or place a new order
             }
         }
 

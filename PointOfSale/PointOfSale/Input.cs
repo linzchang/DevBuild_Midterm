@@ -36,16 +36,16 @@ namespace PointOfSale
             return number;
         }
 
-        public static ulong GetULong(string message)
-        {
-            ulong number;
-            Console.WriteLine(message);
-            while (!ulong.TryParse(Console.ReadLine(), out number) || number <= 0)
-            {
-                Console.WriteLine($"Sorry that's invalid, please try again! {message}");
-            }
-            return number;
-        }
+        //public static ulong GetULong(string message)
+        //{
+        //    ulong number;
+        //    Console.WriteLine(message);
+        //    while (!ulong.TryParse(Console.ReadLine(), out number) || number <= 0)
+        //    {
+        //        Console.WriteLine($"Sorry that's invalid, please try again! {message}");
+        //    }
+        //    return number;
+        //}
 
         public static decimal GetDecimal(string message)
         {
