@@ -11,7 +11,7 @@ namespace PointOfSale
     {
         public static void Cash(decimal grandTotal)
         {
-            decimal userPayment = Input.GetDecimal("Please enter the amount of cash for payment (in decimal format):");
+            decimal userPayment = Input.GetDecimal("\nPlease enter the amount of cash for payment (in decimal format):");
             decimal amountOwed = grandTotal - userPayment;
 
             while (amountOwed > 0)
@@ -35,10 +35,10 @@ namespace PointOfSale
 
         public static void Credit()
         {
-            string cardNumber = GetInputHideKeyStroke("Please enter the 16 digit credit card number:", @"^\d{16}$", 
+            string cardNumber = GetInputHideKeyStroke("\nPlease enter the 16 digit credit card number:", @"^\d{16}$", 
                 "Sorry, that's invalid. You must enter a 16 digit number.");
             string expirationDate = Input.GetInput("Please enter the expiration date in MM/YYYY format:");
-            string errorMessage = $"Sorry, that's not valid.  Please enter the date in MM/YYYY format." +
+            string errorMessage = $"Sorry, that's not valid.  Please enter the date in MM/YYYY format. " +
                     "Cards issued before 2000 will be rejected.";
             if (!expirationDate.Contains("/"))
             {
@@ -62,7 +62,7 @@ namespace PointOfSale
 
         public static void Check()
         {
-            string checkNumber = GetNumberUsingRegex("Please enter the 3-4 digit check number:", @"^\d{3,4}$", 
+            string checkNumber = GetNumberUsingRegex("\nPlease enter the 3-4 digit check number:", @"^\d{3,4}$", 
                 "Sorry, that's not a valid check number.\nPlease enter a 4 digit number:");
             string routingNumber = GetNumberUsingRegex("Please enter the 9 digit routing number:", @"^\d{9}$", 
                 "Sorry, that's not a valid routing number.\nPlease enter a 9 digit number:");

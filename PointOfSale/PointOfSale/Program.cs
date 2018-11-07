@@ -95,14 +95,14 @@ namespace PointOfSale
         {
             while (true)
             {
-                int key = Input.GetProductKey("\nWhich item would you like to purchase?\nPlease enter the item number shown on the left.", MenuItems);
+                int key = Input.GetNumber("\nWhich item would you like to purchase?\nPlease enter the item number shown on the left.", MenuItems);
                 foreach (KeyValuePair<int, Product> item in MenuItems)
                 {
                     if (item.Key == key)
                     {
                         Product product = item.Value;
                         Console.WriteLine($"\nYou selected {product.Name}.");
-                        int quantity = Input.GetQuantity($"How many {product.Name} drinks would you like to buy?");
+                        int quantity = Input.GetNumber($"How many {product.Name} drinks would you like to buy?");
                         product.Quantity = quantity;
                         decimal lineTotal = Product.GetLineTotal(product);
                         Console.WriteLine($"{quantity} {product.Name} drinks will cost {lineTotal:C}.");
@@ -169,8 +169,9 @@ namespace PointOfSale
 
         public static void GetReceipt(Dictionary<int, Product> MenuItems, decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases)
         {
-            Console.WriteLine("Thank you for your payment! Here is your receipt:\n");
-            Console.WriteLine("           Pink Moon Cafe");
+            Console.WriteLine("\nThank you for your payment! Here is your receipt:\n");
+            Console.WriteLine("______________________________________");
+            Console.WriteLine("\n           Pink Moon Cafe\n");
             foreach (var item in userPurchases)
             {
                 Console.WriteLine("{0, -5:0} {1, -20:0} {2, -10:C}", item.Quantity, item.Name, item.Price);
@@ -178,29 +179,14 @@ namespace PointOfSale
             Console.WriteLine($"\nSubtotal: {subtotal:C}");
             Console.WriteLine($"Tax: {tax:C}");
             Console.WriteLine($"Total: {total:C}");
-
-            switch (payType)
-            {
-                case PayType.Cash:
-                    Console.WriteLine("Payment type: Cash\n");
-                    NewOrderOrQuit(MenuItems, userPurchases);
-                    break;
-                case PayType.Credit:
-                    Console.WriteLine("Payment type: Credit\n");
-                    NewOrderOrQuit(MenuItems, userPurchases);
-                    break;
-                case PayType.Check:
-                    Console.WriteLine("Payment type: Check\n");
-                    NewOrderOrQuit(MenuItems, userPurchases);
-                    break;
-                default:
-                    break;
-            }
+            Console.WriteLine($"Payment type: {payType}\n");
+            Console.WriteLine("______________________________________");
+            NewOrderOrQuit(MenuItems, userPurchases); 
         }
 
         public static void NewOrderOrQuit(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
         {
-            string answer = Input.GetInput("Would you like to start over and place a new order or quit?\nType N for New Order or Q to Quit.");
+            string answer = Input.GetInput("\nWould you like to start over and place a new order or quit?\nType N for New Order or Q to Quit.");
             while (true)
             {
                 switch(answer.ToUpper())

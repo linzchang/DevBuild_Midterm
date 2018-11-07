@@ -14,7 +14,7 @@ namespace PointOfSale
             return Console.ReadLine();
         }
 
-        public static int GetProductKey(string message, Dictionary<int, Product> MenuItems)
+        public static int GetNumber(string message, Dictionary<int, Product> MenuItems)
         {
             int number;
             Console.Write(message);
@@ -25,7 +25,7 @@ namespace PointOfSale
             return number;
         }
 
-        public static int GetQuantity(string message)
+        public static int GetNumber(string message)
         {
             int number;
             Console.Write(message);
