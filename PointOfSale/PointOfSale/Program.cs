@@ -198,21 +198,48 @@ namespace PointOfSale
                 {
                     case "1":
                         Payment.Cash(grandTotal);
+                        GetReceipt(subtotal, tax, grandTotal, PayType.Cash, userPurchases);
                         break;
                     case "2":
                         Payment.Credit();
+                        GetReceipt(subtotal, tax, grandTotal, PayType.Credit, userPurchases);
                         break;
                     case "3":
                         Payment.Check();
+                        GetReceipt(subtotal, tax, grandTotal, PayType.Check, userPurchases);
                         break;
                     default:
                         payment = Input.GetInput("Sorry, that's not valid.  Please try again.\nPlease choose 1 for Cash, 2 for Credit or 3 for Check.");
                         continue;
                 }
-                //Display receipt with all items ordered, subtotal, grand total and payment info
-                //ask user if they want to quit or place a new order
             }
         }
 
+        public static void GetReceipt(decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases)
+        {
+            Console.WriteLine("Pink Moon Cafe\n");
+            foreach (var item in userPurchases)
+            {
+                Console.WriteLine("{0, -5:0} {1, -20:0} {2, -20:C}", item.Quantity, item.Name, item.Price);
+            }
+            Console.WriteLine($"\nSubtotal: {subtotal:C}");
+            Console.WriteLine($"Tax: {tax:C}");
+            Console.WriteLine($"Total: {total:C}");
+
+            switch (payType)
+            {
+                case PayType.Cash:
+                    Console.WriteLine("Cash");
+                    break;
+                case PayType.Credit:
+                    Console.WriteLine("Credit");
+                    break;
+                case PayType.Check:
+                    Console.WriteLine("Check");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

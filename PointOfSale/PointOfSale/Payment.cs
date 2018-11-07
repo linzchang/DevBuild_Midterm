@@ -106,4 +106,11 @@ namespace PointOfSale
         }
 
     }
+
+    public enum PayType
+    {
+        Cash,
+        Credit,
+        Check
+    }
 }
