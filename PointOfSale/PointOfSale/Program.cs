@@ -22,8 +22,8 @@ namespace PointOfSale
 
             List<Product> userPurchases = new List<Product>();
 
-            Console.WriteLine("Welcome to Pink Moon Cafe!");
-            DisplayMainMenu(MenuItems, userPurchases);
+            Console.WriteLine("Welcome to Pink Moon Cafe!\n");
+            DisplayProductList(MenuItems, userPurchases);
         }
 
         public static string ReadFile(string fileName)
@@ -68,123 +68,75 @@ namespace PointOfSale
             return products;
         }
 
-        public static void DisplayMainMenu(Dictionary<int, Product> MenuList, List<Product> userPurchases)
+        public static void DisplayProductList(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
         {
-            string switchAnswer = Input.GetInput("Please choose from the following for a list of products:\n1. Tea\n2. Latte \n3. Coffee");
-            while (true)
-            {
-                switch (switchAnswer)
-                {
-                    case "1":
-                        Category tea = Category.Tea;
-                        DisplayProductListByCategory(MenuList, tea, userPurchases);
-                        break;
-                    case "2":
-                        Category latte = Category.Latte;
-                        DisplayProductListByCategory(MenuList, latte, userPurchases);
-                        break;
-                    case "3":
-                        Category coffee = Category.Coffee;
-                        DisplayProductListByCategory(MenuList, coffee, userPurchases);
-                        break;
-                    default:
-                        switchAnswer = Input.GetInput("That is not a valid selection, try again.");
-                        continue;
-                }
-
-                string endProgram = Input.GetInput("Would you like to continue to the main menu?  Press Y to continue");
-                if (endProgram.ToUpper() != "Y")
-                {
-                    break;
-                }
-                Console.Clear();
-            }
+            GetList(MenuItems, userPurchases, Category.Tea);
+            GetList(MenuItems, userPurchases, Category.Latte);
+            GetList(MenuItems, userPurchases, Category.Coffee);
+            StartPurchase(ref MenuItems, userPurchases);
         }
 
-        public static void DisplayProductListByCategory(Dictionary<int, Product> MenuItems, Category choice, List<Product> userPurchases)
+        public static void GetList(Dictionary<int, Product> MenuItems, List<Product> userPurchases, Category category)
         {
-            Console.WriteLine(" ");
-            Console.WriteLine($"Available {choice}s:");
+            Console.WriteLine($"Available {category}s:");
             Console.WriteLine("{0, -10:0} {1, -30:0} {2, -50:0} {3, -20:0}", "Item", "Name", "Description", "Price");
             Console.WriteLine("{0, -10:0} {1, -30:0} {2, -50:0} {3, -20:0}", "====", "====", "===========", "=====");
-
             foreach (KeyValuePair<int, Product> item in MenuItems)
             {
-                if (item.Value.Category == choice)
+                if (item.Value.Category == category)
                 {
                     Console.WriteLine("{0, -10:0} {1, -30:0} {2, -50:0} {3, -20:C}", item.Key, item.Value.Name, item.Value.Description, item.Value.Price);
                 }
             }
             Console.WriteLine(" ");
-            SelectPurchaseOrMenu(MenuItems, userPurchases);
         }
 
-        public static void SelectPurchaseOrMenu(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
+        public static void StartPurchase(ref Dictionary<int, Product> MenuItems, List<Product> userPurchases)
         {
-            Console.WriteLine("Would you like to purchase an item or return to the Main Menu to view a list of item categories?");
-            string answer = Input.GetInput("Type P for Purchase or M for Menu");
             while (true)
             {
-                switch (answer.ToUpper())
+                int key = Input.GetProductKey("\nWhich item would you like to purchase?\nPlease enter the item number shown on the left.", MenuItems);
+                foreach (KeyValuePair<int, Product> item in MenuItems)
                 {
-                    case "P":
-                        MakePurchase(MenuItems, userPurchases);
-                        break;
-                    case "M":
-                        Console.Clear();
-                        DisplayMainMenu(MenuItems, userPurchases);
-                        break;
-                    default:
-                        answer = Input.GetInput("That is not a valid selection, please try again.");
-                        continue;
-                }
-            }
-        }
-
-        public static void MakePurchase(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
-        {
-            int key = Input.GetProductKey("Which item would you like to purchase?\nPlease enter the item number shown on the left.", MenuItems);
-            foreach (KeyValuePair<int, Product> item in MenuItems)
-            {
-                if (item.Key == key)
-                {
-                    Product product = item.Value;
-                    Console.WriteLine($"You selected {product.Name}.");
-                    int quantity = Input.GetNumber($"How many {product.Name} drinks would you like to buy?");
-                    product.Quantity = quantity;
-                    decimal lineTotal = Product.GetLineTotal(product);
-                    Console.WriteLine($"{quantity} {product.Name} drinks will cost {lineTotal:C}.");
-                    userPurchases.Add(product);
-                    string answer = Input.GetInput("Would you like to complete this purchase or return to the Main Menu to purchase more items?\n" +
-                        "Type C to complete purchase or M to return to Main Menu");
-                    while (true)
+                    if (item.Key == key)
                     {
+                        Product product = item.Value;
+                        Console.WriteLine($"\nYou selected {product.Name}.");
+                        int quantity = Input.GetQuantity($"How many {product.Name} drinks would you like to buy?");
+                        product.Quantity = quantity;
+                        decimal lineTotal = Product.GetLineTotal(product);
+                        Console.WriteLine($"{quantity} {product.Name} drinks will cost {lineTotal:C}.");
+                        userPurchases.Add(product);
+                        string answer = Input.GetInput("\nWould you like to complete this purchase or buy more items?\n" +
+                            "Type C to complete purchase or B to buy another item.");
                         if (answer.ToUpper() == "C")
                         {
-                            CompletePurchase(userPurchases);
+                            Console.Clear();
+                            CompletePurchase(MenuItems, userPurchases);
                         }
-                        else if (answer.ToUpper() == "M")
+                        else if (answer.ToUpper() == "B")
                         {
                             Console.Clear();
-                            DisplayMainMenu(MenuItems, userPurchases);
+                            DisplayProductList(MenuItems, userPurchases);
+                            //continue;
                         }
                         else
                         {
                             answer = Input.GetInput("That's not valid, please select C to complete purchase or M for Main Menu.");
                             continue;
                         }
-                    } 
-                }  
+                    }
+                }
             }
         }
 
-        public static void CompletePurchase(List<Product> userPurchases)
+        public static void CompletePurchase(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
         {
             decimal subtotal = Product.GetSubtotal(userPurchases);
             decimal tax = Product.GetSalesTax(subtotal);
             decimal grandTotal = subtotal + tax;
 
-            Console.WriteLine("\nYou selected the following items:");
+            Console.WriteLine("You selected the following items:");
             foreach (var item in userPurchases)
             {
                 Console.WriteLine($"{item.Quantity} {item.Name}(s) for {item.Price:C} each");
@@ -198,15 +150,15 @@ namespace PointOfSale
                 {
                     case "1":
                         Payment.Cash(grandTotal);
-                        GetReceipt(subtotal, tax, grandTotal, PayType.Cash, userPurchases);
+                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Cash, userPurchases);
                         break;
                     case "2":
                         Payment.Credit();
-                        GetReceipt(subtotal, tax, grandTotal, PayType.Credit, userPurchases);
+                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Credit, userPurchases);
                         break;
                     case "3":
                         Payment.Check();
-                        GetReceipt(subtotal, tax, grandTotal, PayType.Check, userPurchases);
+                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Check, userPurchases);
                         break;
                     default:
                         payment = Input.GetInput("Sorry, that's not valid.  Please try again.\nPlease choose 1 for Cash, 2 for Credit or 3 for Check.");
@@ -215,12 +167,13 @@ namespace PointOfSale
             }
         }
 
-        public static void GetReceipt(decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases)
+        public static void GetReceipt(Dictionary<int, Product> MenuItems, decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases)
         {
-            Console.WriteLine("Pink Moon Cafe\n");
+            Console.WriteLine("Thank you for your payment! Here is your receipt:\n");
+            Console.WriteLine("           Pink Moon Cafe");
             foreach (var item in userPurchases)
             {
-                Console.WriteLine("{0, -5:0} {1, -20:0} {2, -20:C}", item.Quantity, item.Name, item.Price);
+                Console.WriteLine("{0, -5:0} {1, -20:0} {2, -10:C}", item.Quantity, item.Name, item.Price);
             }
             Console.WriteLine($"\nSubtotal: {subtotal:C}");
             Console.WriteLine($"Tax: {tax:C}");
@@ -229,16 +182,41 @@ namespace PointOfSale
             switch (payType)
             {
                 case PayType.Cash:
-                    Console.WriteLine("Cash");
+                    Console.WriteLine("Payment type: Cash\n");
+                    NewOrderOrQuit(MenuItems, userPurchases);
                     break;
                 case PayType.Credit:
-                    Console.WriteLine("Credit");
+                    Console.WriteLine("Payment type: Credit\n");
+                    NewOrderOrQuit(MenuItems, userPurchases);
                     break;
                 case PayType.Check:
-                    Console.WriteLine("Check");
+                    Console.WriteLine("Payment type: Check\n");
+                    NewOrderOrQuit(MenuItems, userPurchases);
                     break;
                 default:
                     break;
+            }
+        }
+
+        public static void NewOrderOrQuit(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
+        {
+            string answer = Input.GetInput("Would you like to start over and place a new order or quit?\nType N for New Order or Q to Quit.");
+            while (true)
+            {
+                switch(answer.ToUpper())
+                {
+                    case "N":
+                        userPurchases.Clear();
+                        Console.Clear();
+                        DisplayProductList(MenuItems, userPurchases);
+                        break;
+                    case "Q":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        answer = Input.GetInput("Sorry, that's not valid.  Please press N for a New Order or Q to quit.");
+                        continue;
+                }
             }
         }
     }

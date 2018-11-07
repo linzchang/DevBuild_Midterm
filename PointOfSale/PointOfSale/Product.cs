@@ -44,7 +44,5 @@ namespace PointOfSale
         Latte,
         Tea,
         Coffee,
-        Sweet,
-        Savory
     }
 }
