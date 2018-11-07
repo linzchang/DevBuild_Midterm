@@ -8,7 +8,7 @@ namespace PointOfSale
 {
     class Input
     {
-        public static string GetInput(string message)
+        public static string GetString(string message)
         {
             Console.Write(message);
             return Console.ReadLine();
@@ -31,7 +31,7 @@ namespace PointOfSale
             Console.Write(message);
             while (!int.TryParse(Console.ReadLine(), out number) || number < 1)
             {
-                Console.WriteLine($"Sorry that's invalid, please try again! {message}");
+                Console.WriteLine($"Sorry that's invalid, please enter a number greater than 0.");
             }
             return number;
         }
@@ -40,9 +40,9 @@ namespace PointOfSale
         {
             decimal number;
             Console.Write(message);
-            while (!decimal.TryParse(Console.ReadLine(), out number))
+            while (!decimal.TryParse(Console.ReadLine(), out number) || number < 0)
             {
-                Console.WriteLine($"Sorry that's invalid, please try again! {message}");
+                Console.WriteLine($"Sorry that's invalid, please enter a positive number.");
             }
             return number;
         }

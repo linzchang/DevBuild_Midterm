@@ -38,14 +38,13 @@ namespace PointOfSale
         {
             Dictionary<int, Product> products = new Dictionary<int, Product>();
             int count = 1;
-            //var MenuItems = new List<Product>();
-            using (var reader = new StreamReader(fileName))
+            using (StreamReader reader = new StreamReader(fileName))
             {
                 string line = "";
                 reader.ReadLine();
                 while ((line = reader.ReadLine()) != null)
                 {
-                    var product = new Product();
+                    Product product = new Product();
                     string[] values = line.Split(',');
 
                     product.Name = values[0];
@@ -107,8 +106,9 @@ namespace PointOfSale
                         decimal lineTotal = Product.GetLineTotal(product);
                         Console.WriteLine($"{quantity} {product.Name} drinks will cost {lineTotal:C}.");
                         userPurchases.Add(product);
-                        string answer = Input.GetInput("\nWould you like to complete this purchase or buy more items?\n" +
-                            "Type C to complete purchase or B to buy another item.");
+
+                        string answer = Input.GetString("\nWould you like to complete this purchase or buy more items?\n" +
+                            "Type C to Complete purchase or B to Buy another item.");
                         if (answer.ToUpper() == "C")
                         {
                             Console.Clear();
@@ -122,7 +122,7 @@ namespace PointOfSale
                         }
                         else
                         {
-                            answer = Input.GetInput("That's not valid, please select C to complete purchase or M for Main Menu.");
+                            answer = Input.GetString("That's not valid, please select C to complete purchase or M for Main Menu.");
                             continue;
                         }
                     }
@@ -143,31 +143,31 @@ namespace PointOfSale
             }
             Console.WriteLine($"\nSubtotal: {subtotal:C}\nTax: {tax:C}\nGrand Total: {grandTotal:C}\n");
 
-            string payment = Input.GetInput("How would you like to pay?\n1. Cash\n2. Credit\n3. Check\n");
+            string payment = Input.GetString("How would you like to pay?\n1. Cash\n2. Credit\n3. Check\n");
             while (true)
             {
                 switch (payment)
                 {
                     case "1":
-                        Payment.Cash(grandTotal);
-                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Cash, userPurchases);
+                        decimal change = Payment.Cash(grandTotal);
+                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Cash, userPurchases, change);
                         break;
                     case "2":
-                        Payment.Credit();
-                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Credit, userPurchases);
+                        string cardNumber = Payment.Credit();
+                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Credit, userPurchases, cardNumber);
                         break;
                     case "3":
-                        Payment.Check();
-                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Check, userPurchases);
+                        string checkNumber = Payment.Check();
+                        GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Check, userPurchases, checkNumber);
                         break;
                     default:
-                        payment = Input.GetInput("Sorry, that's not valid.  Please try again.\nPlease choose 1 for Cash, 2 for Credit or 3 for Check.");
+                        payment = Input.GetString("Sorry, that's not valid.  Please try again.\nPlease choose 1 for Cash, 2 for Credit or 3 for Check.");
                         continue;
                 }
             }
         }
 
-        public static void GetReceipt(Dictionary<int, Product> MenuItems, decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases)
+        public static void GetReceipt(Dictionary<int, Product> MenuItems, decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases, string number)
         {
             Console.WriteLine("\nThank you for your payment! Here is your receipt:\n");
             Console.WriteLine("______________________________________");
@@ -178,15 +178,41 @@ namespace PointOfSale
             }
             Console.WriteLine($"\nSubtotal: {subtotal:C}");
             Console.WriteLine($"Tax: {tax:C}");
-            Console.WriteLine($"Total: {total:C}");
+            Console.WriteLine($"Total: {total:C}\n");
             Console.WriteLine($"Payment type: {payType}\n");
+            if (payType == PayType.Credit)
+            {
+                Console.WriteLine($"Credit card: {number}");
+            }
+            else
+            {
+                Console.WriteLine($"Check number: {number}");
+            }
+            Console.WriteLine("______________________________________");
+            NewOrderOrQuit(MenuItems, userPurchases);
+        }
+
+        public static void GetReceipt(Dictionary<int, Product> MenuItems, decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases, decimal change)
+        {
+            Console.WriteLine("\nThank you for your payment! Here is your receipt:\n");
+            Console.WriteLine("______________________________________");
+            Console.WriteLine("\n           Pink Moon Cafe\n");
+            foreach (var item in userPurchases)
+            {
+                Console.WriteLine("{0, -5:0} {1, -20:0} {2, -10:C}", item.Quantity, item.Name, item.Price);
+            }
+            Console.WriteLine($"\nSubtotal: {subtotal:C}");
+            Console.WriteLine($"Tax: {tax:C}");
+            Console.WriteLine($"Total: {total:C}\n");
+            Console.WriteLine($"Payment type: {payType}");
+            Console.WriteLine($"Change: {Math.Abs(change):C}\n");
             Console.WriteLine("______________________________________");
             NewOrderOrQuit(MenuItems, userPurchases); 
         }
 
         public static void NewOrderOrQuit(Dictionary<int, Product> MenuItems, List<Product> userPurchases)
         {
-            string answer = Input.GetInput("\nWould you like to start over and place a new order or quit?\nType N for New Order or Q to Quit.");
+            string answer = Input.GetString("\nWould you like to start over and place a new order or quit?\nType N for New Order or Q to Quit.");
             while (true)
             {
                 switch(answer.ToUpper())
@@ -200,10 +226,11 @@ namespace PointOfSale
                         Environment.Exit(0);
                         break;
                     default:
-                        answer = Input.GetInput("Sorry, that's not valid.  Please press N for a New Order or Q to quit.");
+                        answer = Input.GetString("Sorry, that's not valid.  Please press N for a New Order or Q to quit.");
                         continue;
                 }
             }
         }
+
     }
 }

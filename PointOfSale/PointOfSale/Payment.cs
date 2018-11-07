@@ -9,40 +9,44 @@ namespace PointOfSale
 {
     class Payment
     {
-        public static void Cash(decimal grandTotal)
+        public static decimal Cash(decimal grandTotal)
         {
-            decimal userPayment = Input.GetDecimal("\nPlease enter the amount of cash for payment (in decimal format):");
+            decimal userPayment = Input.GetDecimal("\nPlease enter the amount of cash for payment (in decimal format): ");
             decimal amountOwed = grandTotal - userPayment;
+            decimal change = 0;
 
             while (amountOwed > 0)
             {
-                userPayment = Input.GetDecimal($"Sorry, you still owe {amountOwed:C}.  Please enter the amount of cash for payment:");
+                userPayment = Input.GetDecimal($"Sorry, you still owe {amountOwed:C}.  Please enter the amount of cash for payment: ");
                 if (userPayment > amountOwed)
                 {
-                    decimal change = userPayment - amountOwed;
+                    change = userPayment - amountOwed;
                     Console.WriteLine($"Your change is {Math.Abs(change):C}");
                     amountOwed -= userPayment;
+                    return change;
                 }
                 amountOwed -= userPayment;
             }
 
             if (userPayment > grandTotal)
             {
-                decimal change = grandTotal - userPayment;
+                change = grandTotal - userPayment;
                 Console.WriteLine($"Your change is {Math.Abs(change):C}");
+                return change;
             }
+            return change;
         }
 
-        public static void Credit()
+        public static string Credit()
         {
-            string cardNumber = GetInputHideKeyStroke("\nPlease enter the 16 digit credit card number:", @"^\d{16}$", 
+            string cardNumber = GetInputHideKeyStroke("\nPlease enter the 16 digit credit card number: ", @"^\d{16}$", 
                 "Sorry, that's invalid. You must enter a 16 digit number.");
-            string expirationDate = Input.GetInput("Please enter the expiration date in MM/YYYY format:");
+            string expirationDate = Input.GetString("Please enter the expiration date in MM/YYYY format: ");
             string errorMessage = $"Sorry, that's not valid.  Please enter the date in MM/YYYY format. " +
                     "Cards issued before 2000 will be rejected.";
             if (!expirationDate.Contains("/"))
             {
-                expirationDate = Input.GetInput(errorMessage);
+                expirationDate = Input.GetString(errorMessage);
             }
             while (true)
             {
@@ -50,26 +54,28 @@ namespace PointOfSale
 
                 if (!Regex.IsMatch(dateParts[0], @"^(0[1-9]{1}|1[0-2]{1})$") || !Regex.IsMatch(dateParts[1], @"^20[0-9]{2}$"))
                 {
-                    expirationDate = Input.GetInput(errorMessage);
+                    expirationDate = Input.GetString(errorMessage);
                     continue;
                 }
                 break;
             }
-            string cvv = GetNumberUsingRegex("Please enter the 3-4 digit CVV:", @"^\d{3,4}$", "Sorry, that's not valid.  Please enter a 3-4 digit CVV number.");
+            string cvv = GetNumberUsingRegex("Please enter the 3-4 digit CVV: ", @"^\d{3,4}$", "Sorry, that's not valid.  Please enter a 3-4 digit CVV number.");
             Console.WriteLine($"\nYour payment has been processed.\nCredit card ending in {cardNumber.Substring(cardNumber.Length-4)} with " +
                 $"expiration {expirationDate} and CVV {cvv}.");
+            return cardNumber.Substring(cardNumber.Length - 4);
         }
 
-        public static void Check()
+        public static string Check()
         {
-            string checkNumber = GetNumberUsingRegex("\nPlease enter the 3-4 digit check number:", @"^\d{3,4}$", 
+            string checkNumber = GetNumberUsingRegex("\nPlease enter the 3-4 digit check number: ", @"^\d{3,4}$", 
                 "Sorry, that's not a valid check number.\nPlease enter a 4 digit number:");
-            string routingNumber = GetNumberUsingRegex("Please enter the 9 digit routing number:", @"^\d{9}$", 
+            string routingNumber = GetNumberUsingRegex("Please enter the 9 digit routing number: ", @"^\d{9}$", 
                 "Sorry, that's not a valid routing number.\nPlease enter a 9 digit number:");
-            string accountNumber = GetInputHideKeyStroke("Please enter the 10-12 digit account number:", @"^\d{10,12}$", 
+            string accountNumber = GetInputHideKeyStroke("Please enter the 10-12 digit account number: ", @"^\d{10,12}$", 
                 "That's not a valid account number.\nPlease enter a valid account number, up to 12 digits.");
             Console.WriteLine($"\nYour payment has been processed. Check number {checkNumber} with routing number {routingNumber} " +
                 $"and account number ending with {accountNumber.Substring(accountNumber.Length - 4)}.");
+            return checkNumber;
         }
 
         public static string GetInputHideKeyStroke(string message, string regex, string error)
@@ -93,7 +99,7 @@ namespace PointOfSale
 
         public static string GetNumberUsingRegex(string message, string regex, string invalid)
         {
-            string number = Input.GetInput(message);
+            string number = Input.GetString(message);
             while (true)
             {
                 if (Regex.IsMatch(number, regex))
@@ -102,7 +108,7 @@ namespace PointOfSale
                 }
                 else
                 {
-                    number = Input.GetInput(invalid);
+                    number = Input.GetString(invalid);
                 }
             }
         }

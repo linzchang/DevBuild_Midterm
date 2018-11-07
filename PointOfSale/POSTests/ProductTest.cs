@@ -11,16 +11,13 @@ namespace POSTests
         [TestMethod]
         public void GetLineTotal_MultiplyPriceByQuantity_True()
         {
-            //Assign
             Product product = new Product();
             product.Price = 4.5M;
             product.Quantity = 3;
 
-            //Act
             decimal target = (decimal)4.5 * 3M;
             decimal actual = Product.GetLineTotal(product);
 
-            //Assert
             Assert.AreEqual(target, actual);
         }
 
