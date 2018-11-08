@@ -14,7 +14,7 @@ namespace PointOfSale
         static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US", false);
-            
+
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             string fileName = Path.Combine(directory.FullName, "MenuItems.csv");
@@ -120,12 +120,12 @@ namespace PointOfSale
 
                         string answer = Input.GetString("\nWould you like to complete this purchase or buy more items?\n" +
                             "Type C to Complete purchase or B to Buy another item.");
-                        if (answer.ToUpper() == "C")
+                        if (answer.ToUpper() == "C" || answer.ToUpper() == "COMPLETE")
                         {
                             Console.Clear();
                             CompletePurchase(MenuItems, userPurchases);
                         }
-                        else if (answer.ToUpper() == "B")
+                        else if (answer.ToUpper() == "B" || answer.ToUpper() == "BUY")
                         {
                             Console.Clear();
                             DisplayProductList(MenuItems, userPurchases);
@@ -157,17 +157,20 @@ namespace PointOfSale
             string payment = Input.GetString("How would you like to pay?\n1. Cash\n2. Credit\n3. Check\n");
             while (true)
             {
-                switch (payment)
+                switch (payment.ToLower())
                 {
                     case "1":
+                    case "cash":
                         decimal change = Payment.Cash(grandTotal);
                         GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Cash, userPurchases, change);
                         break;
                     case "2":
+                    case "credit":
                         string cardNumber = Payment.Credit();
                         GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Credit, userPurchases, cardNumber);
                         break;
                     case "3":
+                    case "check":
                         string checkNumber = Payment.Check();
                         GetReceipt(MenuItems, subtotal, tax, grandTotal, PayType.Check, userPurchases, checkNumber);
                         break;
@@ -181,8 +184,9 @@ namespace PointOfSale
         public static void GetReceipt(Dictionary<int, Product> MenuItems, decimal subtotal, decimal tax, decimal total, PayType payType, List<Product> userPurchases, string number)
         {
             Console.WriteLine("\nThank you for your payment! Here is your receipt:\n");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("______________________________________");
-            Console.WriteLine("\n           Pink Moon Cafe\n");
+            Console.WriteLine("\n           PINK MOON CAFE\n");
             foreach (var item in userPurchases)
             {
                 Console.WriteLine("{0, -5:0} {1, -20:0} {2, -10:C}", item.Quantity, item.Name, item.Price);
@@ -190,7 +194,7 @@ namespace PointOfSale
             Console.WriteLine($"\nSubtotal: {subtotal:C}");
             Console.WriteLine($"Tax: {tax:C}");
             Console.WriteLine($"Total: {total:C}\n");
-            Console.WriteLine($"Payment type: {payType}\n");
+            Console.WriteLine($"Payment type: {payType}");
             if (payType == PayType.Credit)
             {
                 Console.WriteLine($"Credit card: {number}");
@@ -200,6 +204,7 @@ namespace PointOfSale
                 Console.WriteLine($"Check number: {number}");
             }
             Console.WriteLine("______________________________________");
+            Console.ResetColor();
             NewOrderOrQuit(MenuItems, userPurchases);
         }
 
@@ -209,7 +214,7 @@ namespace PointOfSale
             Console.WriteLine("\nThank you for your payment! Here is your receipt:\n");
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("______________________________________");
-            Console.WriteLine("\n           Pink Moon Cafe\n");
+            Console.WriteLine("\n           PINK MOON CAFE\n");
             foreach (var item in userPurchases)
             {
                 Console.WriteLine("{0, -5:0} {1, -20:0} {2, -10:C}", item.Quantity, item.Name, item.Price);
@@ -232,11 +237,13 @@ namespace PointOfSale
                 switch(answer.ToUpper())
                 {
                     case "N":
+                    case "NEW ORDER":
                         userPurchases.Clear();
                         Console.Clear();
                         DisplayProductList(MenuItems, userPurchases);
                         break;
                     case "Q":
+                    case "QUIT":
                         Environment.Exit(0);
                         break;
                     default:
