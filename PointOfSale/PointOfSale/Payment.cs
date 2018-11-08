@@ -73,7 +73,7 @@ namespace PointOfSale
                 "Sorry, that's not a valid routing number.\nPlease enter a 9 digit number:");
             string accountNumber = GetInputHideKeyStroke("Please enter the 10-12 digit account number: ", @"^\d{10,12}$", 
                 "That's not a valid account number.\nPlease enter a valid account number, up to 12 digits.");
-            Console.WriteLine($"\nYour payment has been processed. Check number {checkNumber} with routing number {routingNumber} " +
+            Console.WriteLine($"\nYour payment has been processed.\nCheck number {checkNumber} with routing number {routingNumber} " +
                 $"and account number ending with {accountNumber.Substring(accountNumber.Length - 4)}.");
             return checkNumber;
         }
